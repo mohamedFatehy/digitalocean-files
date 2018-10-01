@@ -1,0 +1,105 @@
+----------------------------------------------------------
+// install appache
+-sudo apt update
+-sudo apt install apache2
+
+-sudo ufw allow in "Apache Full"
+
+=> now try http://your_server_ip
+	if you see appache page the all is ok
+
+-sudo apt install curl
+-----------------------------------------------------------
+// install mysql
+-sudo apt install mysql-server
+-sudo mysql_secure_installation
+// you will be asked few questions 
+// choose LOW and enter password as (password)
+
+// the open mysql and perform this queries
+-sudo mysql
+ SELECT user,authentication_string,plugin,host FROM mysql.user;
+ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+ FLUSH PRIVILEGES;
+ SELECT user,authentication_string,plugin,host FROM mysql.user;
+ exit
+
+// back to terminal
+---------------------------------------------------
+
+// Installing PHP
+
+-sudo apt install php libapache2-mod-php php-mysql
+-sudo nano /etc/apache2/mods-enabled/dir.conf
+
+// change the content to the folowing three lines
+
+<IfModule mod_dir.c>
+    DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+</IfModule>
+
+
+-sudo systemctl restart apache2
+-apt install php-cli
+
+// now php is ok
+--------------------------------------------------------------------------
+// install phpmyadmin
+
+-sudo apt update
+-sudo apt install phpmyadmin php-mbstring php-gettext
+-sudo phpenmod mbstring
+-sudo systemctl restart apache2
+-sudo mysql
+	SELECT user,authentication_string,plugin,host FROM mysql.user;
+	ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+	FLUSH PRIVILEGES;
+	SELECT user,authentication_string,plugin,host FROM mysql.user;
+
+
+// now open http://your_server_ip/phpmyadmin
+// if shows 404  then
+	-sudo ln -s /usr/share/phpmyadmin/ /var/www/PROJECT/public
+
+// then install composer  follow the following link
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-composer-on-ubuntu-18-04
+
+
+---------------------------------------------------------------
+// then deal with the rewrite issue
+
+-sudo a2enmod rewrite
+-sudo systemctl restart apache2
+-sudo nano /etc/apache2/sites-available/000-default.conf
+
+// will open nano editor then add the following lines  after  <VirtualHost *:80>
+
+   <Directory /var/www/html>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+// you may want to replace  /var/www/html  with /var/www/html/PROJECT/public
+
+-sudo systemctl restart apache2
+
+// if your project is not laravel you need to add .htaccess file in your root Directory
+
+---------------------------------------------------------------------
+
+// if your project is laravel
+
+-cd /var/www/html/PROJECT
+-composer install
+-cp .env.example .env
+-rm -rf .env.example
+// open .env and change the mail driver from stmp => mail
+// edit .env => put DB_DATABASE and DB_USERNAME and DB_PASSWORD and save
+
+- composer dumpautoload
+- php artisan key:generate
+- php artisan config:cache
+- chmod -R 777 /var/www/html/PROJECT/storage
+
+// now you can run the application
