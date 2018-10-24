@@ -13,7 +13,7 @@
 // install mysql
 -sudo apt install mysql-server
 -sudo mysql_secure_installation
-// you will be asked few questions 
+// you will be asked few questions
 // choose LOW and enter password as (password)
 
 // the open mysql and perform this queries
@@ -103,3 +103,81 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-use-composer
 - chmod -R 777 /var/www/html/PROJECT/storage
 
 // now you can run the application
+
+
+
+
+
+
+
+
+
+//////////////// general issues ////
+
+// enable port 22 for ssh
+
+-sudo ufw allow 22/tcp
+
+
+
+----------- INSTALL MONGO DB -------------
+
+
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+
+echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+
+sudo apt-get install -y mongodb-org
+
+
+sudo systemctl start mongod
+
+
+sudo systemctl status mongod
+
+ufu enable
+
+ufw allow 22
+
+utf allow 27017
+
+vim /etc/mongod.conf      /// change bindip to 0.0.0.0
+
+
+// when trying to connect robomongo
+
+systemctl restart mongod
+
+// fix mongo vommand
+
+export LC_ALL=C
+
+
+
+
+
+
+
+
+sudo apt-get install curl python-software-properties
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+Use LTS Release : At the last update of this tutorial, Node.js 8.12.0 is the LTS release available.
+
+sudo apt-get install curl python-software-properties
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+For this tutorial, I am using the latest current release and added their PPA to my system.
+
+Step 2 – Install Node.js on Ubuntu
+You can successfully add Node.js PPA to Ubuntu system. Now execute the below command install Node on and Ubuntu using apt-get. This will also installed NPM with node.js. This command also installs many other dependent packages on your system.
+
+sudo apt-get install nodejs
+
+sudo npm install pm2 -g
+
+ln -s /usr/bin/nodejs /usr/bin/node
+
+
+pm2 start app.js
+
+
+
