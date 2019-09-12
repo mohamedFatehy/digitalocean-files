@@ -40,8 +40,6 @@
 
 
 -sudo systemctl restart apache2
--apt install php-cli
-
 // now php is ok
 --------------------------------------------------------------------------
 // install phpmyadmin
